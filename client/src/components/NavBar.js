@@ -17,7 +17,7 @@ const NavBar = observer(()=>{
         localStorage.setItem('alertShown', 'false');
         navigate(SHOP_ROUTE);
     }
-    console.log(localStorage.getItem('alertShown'))
+
     return(
         <Navbar bg = "dark" data-bs-theme="dark">
             <Container>

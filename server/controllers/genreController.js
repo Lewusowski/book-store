@@ -4,7 +4,6 @@ const {QueryTypes} = require('sequelize');
 class genreController {
 
     async create(req, res){
-        console.log('body:' + req.body)
         const {name} = req.body
         console.log(name)
         const genre = await database.query(`insert into genre (name) values ('${name}')`)

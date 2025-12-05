@@ -4,7 +4,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import GenreBar from "../components/GenreBar";
 import {observer} from "mobx-react-lite";
 import {fetchBooks, fetchGenres, fetchPublishHouses, fetchWarehouses} from "../http/bookAPI";
-import {login} from "../http/clientAPI";
+import {check, login} from "../http/clientAPI";
 import BookList from "../components/BookList";
 import Pages from "../components/Pages";
 import {render} from "@testing-library/react";
@@ -16,6 +16,21 @@ const Shop = observer(() => {
     const {client} = useContext(Context);
 
     useEffect(() => {
+        check().then(data => {
+            console.log(data)
+            if(data!==null){
+                console.log(client.getClient().role)
+                client.setClient(data)
+                console.log(client.getClient().role)
+                client.setIsAuth(true)
+                console.log("сделал")
+                client.setIsAdmin(data.role==="Админ")
+                console.log(client.getIsAuth())
+            } else{
+                client.setIsAuth(false)
+                client.setIsAdmin(false)
+            }
+        })
         fetchPublishHouses().then(publishHouses => book.setPublishHouses(publishHouses));
         fetchGenres().then((genres) => book.setGenres(genres));
         fetchWarehouses().then(warehouses => book.setWarehouses(warehouses));
@@ -26,6 +41,7 @@ const Shop = observer(() => {
         })
 
     }, []);
+    console.log(client.getIsAuth())
 
     useEffect(() => {
         fetchBooks(book.getSelectedGenre().name, book.getPage(), book.getLimit()).then(books => {
@@ -33,6 +49,7 @@ const Shop = observer(() => {
             book.setTotalCount(books["count"]);
         });
     }, [book._page, book._selectedGenre.id])
+
 
 
     return (

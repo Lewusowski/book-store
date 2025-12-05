@@ -43,9 +43,9 @@ const Basket = observer(() => {
     const checkOrderPermission = () => {
         const clientData = client.getClient()[0];
         if(clientData.country&&clientData.city&&clientData.street&&clientData.building&&clientData.apartment_number){
-            setShowWarn(false);
+            setShowConfirmModal(true)
         }else{
-            setShowConfirmModal(true);
+            setShowWarn(true);
         }
     }
 

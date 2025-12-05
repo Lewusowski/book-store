@@ -7,14 +7,21 @@ const ProvideFeedback = ({show, onHide, order_id, amount}) => {
     const [review, setReview] = useState(null);
     const [rating, setRating] = useState(0);
     const ratingRange = [1, 2, 3, 4, 5]
+    const date = new Date();
+    const currentDate = date.getFullYear() + '-' +
+        (date.getMonth() + 1) + '-' +
+        (date.getDate()) + ' ' +
+        (date.getHours()) + ':' +
+        (date.getMinutes()) + ':' +
+        (date.getSeconds());
 
     const prepareFeedback = () => {
         const formData = new FormData();
         console.log(order_id)
         formData.append('order_id', order_id);
-        formData.append('amount', amount);
         formData.append("review", review);
         formData.append("rating", rating);
+        formData.append('date', currentDate);
         sendFeedback(formData).then((res) => {
             onHide();
             alert('Ваш отзыв успешно сохранен! Спасибо, Ваше мнение очень важно для нас!')

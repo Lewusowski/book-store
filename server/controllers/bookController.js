@@ -117,21 +117,22 @@ class bookController{
 
     async getReviews(req, res){
         const {id} =req.params;
-        const reviews = await database.query(`select distinct review, rating, country, surname, name from cart_book join client on client.id=(select client_id from cart where cart.id=cart_book.cart_id) where book_id = ${id} and review is not null`, {type:QueryTypes.SELECT});
+        const reviews = await database.query(`select review, rating, country, surname, name from reviews join client on client_id=client.id where book_id = ${id}`, {type:QueryTypes.SELECT});
         return res.json(reviews)
     }
 
     async sendFeedback(req, res){
-        const {order_id, amount, review, rating} = req.body;
+        const {order_id, review, rating, date} = req.body;
+        console.log(order_id, review, rating, date)
         const feedback = database.query(`
-            insert into cart_book(cart_id, book_id, amount, review, rating) values(
-                (select id from cart where client_id = (select client_id from orders where id = ${order_id})),
+            insert into reviews(client_id, book_id, review, rating, date) values(
+                (select client_id from orders where id = ${order_id}),
                 (select book_id from orders where id = ${order_id}),
-                ${amount},
                 '${review}',
-                ${rating});`)
+                ${rating},
+                '${date}');`)
 
-        return res.json(1)
+        return res.json(feedback)
     }
 }
 

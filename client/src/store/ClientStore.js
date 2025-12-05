@@ -9,11 +9,13 @@ export default class ClientStore {
     }
 
     setIsAuth(bool){
+        console.log('СТАВЛЮ ' + bool);
         this._isAuth = bool;
+        console.log(this._isAuth)
     }
 
     setIsAdmin(bool){
-        this._isAuth = bool;
+        this._isAdmin = bool;
     }
 
     setClient(client){
